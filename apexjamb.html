@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Apex TOTORIAL - Official JAMB Practice Platform with 50 Real Questions">
+    <meta name="keywords" content="JAMB, JAMB Practice, JAMB Questions, Nigerian JAMB, Apex TOTORIAL">
+    <meta name="author" content="Apex TOTORIAL">
+    <title>Apex TOTORIAL - JAMB Practice</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* === BASE STYLES === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary-red: #e63946;
+            --primary-yellow: #ffb703;
+            --dark-red: #d90429;
+            --dark-yellow: #ff9e00;
+            --light-bg: #f8f9fa;
+            --dark-text: #212529;
+            --white: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            min-height: 100vh;
+            color: var(--dark-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+
+        /* === CORE LAYOUT === */
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* === LOGIN PAGE === */
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+            min-height: 100vh;
+        }
+
+        .logo {
+            margin-bottom: 40px;
+            padding: 15px 0;
+            border-bottom: 2px solid var(--primary-yellow);
+        }
+
+        .logo h1 {
+            color: var(--primary-red);
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo p {
+            color: var(--primary-yellow);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .login-form {
+            width: 100%;
+            max-width: 350px;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark-text);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+            font-weight: 500;
+            background: #fafafa;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-red);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.2);
+            background: white;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary-red);
+            color: var(--white);
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn:hover {
+            background: var(--dark-red);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(230, 57, 70, 0.3);
+        }
+
+        .error-message {
+            color: var(--primary-red);
+            text-align: center;
+            margin-top: 15px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: none;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+
+        /* === QUIZ CONTAINER === */
+        .quiz-container {
+            display: none;
+            padding: 20px;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary-yellow);
+        }
+
+        .quiz-title {
+            color: var(--primary-red);
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .timer {
+            background: var(--primary-yellow);
+            color: var(--dark-text);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-container {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+            border-left: 5px solid var(--primary-red);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .subject-tag {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-transform: capitalize;
+        }
+
+        .english-tag {
+            background: rgba(230, 57, 70, 0.15);
+            color: var(--primary-red);
+        }
+
+        .biology-tag {
+            background: rgba(40, 167, 69, 0.15);
+            color: #28a745;
+        }
+
+        .chemistry-tag {
+            background: rgba(0, 123, 255, 0.15);
+            color: #007bff;
+        }
+
+        .physics-tag {
+            background: rgba(111, 66, 193, 0.15);
+            color: #6f42c1;
+        }
+
+        .question-number {
+            color: var(--primary-red);
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            margin-bottom: 24px;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 16px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .option:hover {
+            background: #fff2cc;
+            border-color: var(--primary-yellow);
+            transform: translateY(-2px);
+        }
+
+        .option.selected {
+            background: #fff2cc;
+            border-color: var(--primary-yellow);
+            box-shadow: 0 0 0 3px rgba(255, 183, 3, 0.3);
+        }
+
+        .option input[type="radio"] {
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: var(--primary-red);
+            width: 18px;
+            height: 18px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .btn-nav {
+            padding: 14px 20px;
+            background: var(--primary-red);
+            color: var(--white);
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        .btn-nav:hover {
+            background: var(--dark-red);
+            transform: translateY(-2px);
+        }
+
+        .btn-nav:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-next {
+            background: var(--primary-yellow);
+            color: var(--dark-text);
+        }
+
+        .btn-next:hover {
+            background: var(--dark-yellow);
+        }
+
+        .progress-container {
+            margin-top: 20px;
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary-red);
+            width: 0%;
+            transition: width 0.4s;
+        }
+
+        /* === RESULT PAGE === */
+        .result-container {
+            display: none;
+            padding: 40px 20px;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .result-icon {
+            font-size: 4rem;
+            color: var(--primary-red);
+            margin-bottom: 20px;
+        }
+
+        .result-title {
+            font-size: 2rem;
+            color: var(--primary-red);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .result-score {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--primary-yellow);
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-message {
+            font-size: 1.2rem;
+            color: var(--dark-text);
+            margin-bottom: 30px;
+            line-height: 1.7;
+            max-width: 400px;
+        }
+
+        .btn-restart {
+            background: var(--primary-red);
+            color: var(--white);
+            border: none;
+            padding: 16px 30px;
+            font-size: 1.1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+            display: inline-block;
+            margin: 10px 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .btn-restart:hover {
+            background: var(--dark-red);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(230, 57, 70, 0.3);
+        }
+
+        /* === MOBILE OPTIMIZATION === */
+        @media (max-width: 480px) {
+            .logo h1 {
+                font-size: 2rem;
+            }
+            .quiz-title {
+                font-size: 1.3rem;
+            }
+            .question-text {
+                font-size: 1.1rem;
+            }
+            .result-title {
+                font-size: 1.8rem;
+            }
+            .result-score {
+                font-size: 3.5rem;
+            }
+            .btn-nav {
+                font-size: 0.95rem;
+                padding: 12px 16px;
+            }
+        }
+
+        /* === PERFORMANCE & ACCESSIBILITY === */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* === FAVICON & PWA === */
+        .favicon {
+            width: 48px;
+            height: 48px;
+            display: inline-block;
+            background: var(--primary-red);
+            border-radius: 50%;
+            margin-right: 10px;
+            color: white;
+            font-weight: bold;
+            line-height: 48px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        /* === ANIMATIONS === */
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        /* === FOOTER === */
+        .footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 30px;
+            padding: 10px;
+            opacity: 0.7;
+        }
+
+        /* === LOADING STATE === */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            color: var(--primary-red);
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(230, 57, 70, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-red);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Login Page -->
+        <div class="login-container" id="loginPage">
+            <div class="logo">
+                <div class="favicon">A</div>
+                <h1>Apex TOTORIAL</h1>
+                <p>JAMB Practice Platform</p>
+            </div>
+            
+            <div class="login-form">
+                <div class="form-group">
+                    <label for="password">Enter Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="apex123" autocomplete="current-password">
+                </div>
+                
+                <button id="loginBtn" class="btn">Access Quiz</button>
+                <div class="error-message" id="errorMessage">
+                    Incorrect password. Please try again.
+                </div>
+            </div>
+            <div class="footer">
+                © 2025 Apex TOTORIAL | JAMB Practice
+            </div>
+        </div>
+
+        <!-- Quiz Container -->
+        <div class="quiz-container" id="quizContainer">
+            <div class="quiz-header">
+                <h2 class="quiz-title">JAMB Practice Test</h2>
+                <div class="timer" id="timer">00:30:00</div>
+            </div>
+            
+            <div class="question-container">
+                <span class="subject-tag english-tag" id="subjectTag">English</span>
+                <div class="question-number">Question <span id="currentQuestion">1</span> of <span id="totalQuestions">50</span></div>
+                <div class="question-text" id="questionText">Loading question...</div>
+                
+                <div class="options-container" id="optionsContainer">
+                    <!-- Options will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            
+            <div class="navigation">
+                <button class="btn-nav" id="prevBtn" disabled>Previous</button>
+                <button class="btn-nav btn-next" id="nextBtn">Next</button>
+            </div>
+        </div>
+
+        <!-- Result Page -->
+        <div class="result-container" id="resultContainer">
+            <div class="result-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h2 class="result-title">Quiz Completed!</h2>
+            <div class="result-score" id="resultScore">0%</div>
+            <p class="result-message" id="resultMessage">Your performance summary will appear here...</p>
+            <button class="btn-restart" id="restartBtn">Restart Quiz</button>
+            <button class="btn-restart" id="emailBtn">Send Score to Email</button>
+            <div class="footer">
+                © 2025 Apex TOTORIAL | JAMB Practice
+            </div>
+        </div>
+
+        <script>
+            // === QUIZ DATA ===
+            const quizData = [
+                // English (20)
+                { subject: "english", question: "Choose the word most similar to 'AMELIORATE'", options: ["Worsen", "Improve", "Clarify", "Aggravate"], answer: 1 },
+                { subject: "english", question: "Opposite of 'MORTAL'", options: ["Immortal", "Temporary", "Short-lived", "Decaying"], answer: 0 },
+                { subject: "english", question: "The principal called the meeting to order, but only a _____ of students showed up.", options: ["majority", "minority", "major", "minor"], answer: 1 },
+                { subject: "english", question: "Most similar to 'PRAGMATIC'", options: ["Idealistic", "Impractical", "Practical", "Dreamy"], answer: 2 },
+                { subject: "english", question: "Part of speech: 'She writes very beautifully.'", options: ["Noun", "Adjective", "Adverb", "Verb"], answer: 2 },
+                { subject: "english", question: "The _____ of the accident was due to reckless driving.", options: ["affect", "effect", "cause", "reason"], answer: 1 },
+                { subject: "english", question: "Opposite of 'BENEFICIAL'", options: ["Harmful", "Helpful", "Useful", "Advantageous"], answer: 0 },
+                { subject: "english", question: "Neither of the boys _____ responsible for the damage.", options: ["are", "were", "is", "have been"], answer: 2 },
+                { subject: "english", question: "Most similar to 'MUNIFICENT'", options: ["Generous", "Stingy", "Selfish", "Greedy"], answer: 0 },
+                { subject: "english", question: "Figure of speech: 'The wind whispered through the trees.'", options: ["Simile", "Metaphor", "Personification", "Alliteration"], answer: 2 },
+                { subject: "english", question: "The teacher, as well as the students, _____ present.", options: ["were", "was", "are", "is"], answer: 1 },
+                { subject: "english", question: "Opposite of 'VORACIOUS'", options: ["Hungry", "Gluttonous", "Insatiable", "Satiated"], answer: 3 },
+                { subject: "english", question: "The company has _____ its profits by 20% this year.", options: ["raised", "risen", "increased", "improved"], answer: 2 },
+                { subject: "english", question: "Most similar to 'ELOQUENT'", options: ["Inarticulate", "Fluent", "Quiet", "Shy"], answer: 1 },
+                { subject: "english", question: "Part of speech: 'The children played happily.'", options: ["Adjective", "Adverb", "Noun", "Verb"], answer: 1 },
+                { subject: "english", question: "Not only _____ the game, but he also scored the winning goal.", options: ["did he win", "he won", "has he won", "he has won"], answer: 0 },
+                { subject: "english", question: "Opposite of 'ABUNDANT'", options: ["Plentiful", "Scarce", "Ample", "Sufficient"], answer: 1 },
+                { subject: "english", question: "Each of the students _____ required to submit the assignment.", options: ["are", "were", "is", "have been"], answer: 2 },
+                { subject: "english", question: "Most similar to 'LETHARGIC'", options: ["Energetic", "Lively", "Tired", "Active"], answer: 2 },
+                { subject: "english", question: "Figure of speech: 'Her voice is music to my ears.'", options: ["Simile", "Metaphor", "Personification", "Hyperbole"], answer: 1 },
+                
+                // Biology (10)
+                { subject: "biology", question: "Which is NOT a characteristic of living organisms?", options: ["Respiration", "Growth", "Crystallization", "Reproduction"], answer: 2 },
+                { subject: "biology", question: "Process by which plants lose water through leaves?", options: ["Transpiration", "Evaporation", "Condensation", "Photosynthesis"], answer: 0 },
+                { subject: "biology", question: "Basic structural unit of life?", options: ["Organ", "Tissue", "Cell", "Organ system"], answer: 2 },
+                { subject: "biology", question: "Where does respiration take place?", options: ["Nucleus", "Mitochondria", "Ribosome", "Chloroplast"], answer: 1 },
+                { subject: "biology", question: "Which is NOT in the circulatory system?", options: ["Heart", "Blood vessels", "Blood", "Kidneys"], answer: 3 },
+                { subject: "biology", question: "Process by which plants make food?", options: ["Respiration", "Transpiration", "Photosynthesis", "Digestion"], answer: 2 },
+                { subject: "biology", question: "Characteristic of all living things?", options: ["Movement", "Breathing", "Metabolism", "Walking"], answer: 2 },
+                { subject: "biology", question: "Where does photosynthesis occur?", options: ["Roots", "Stem", "Leaves", "Flowers"], answer: 2 },
+                { subject: "biology", question: "Which is NOT a type of reproduction?", options: ["Sexual", "Asexual", "Binary fission", "Diffusion"], answer: 3 },
+                { subject: "biology", question: "Main function of xylem?", options: ["Transport food", "Transport water and minerals", "Provide support", "Produce energy"], answer: 1 },
+                
+                // Chemistry (10)
+                { subject: "chemistry", question: "Which is a chemical change?", options: ["Melting ice", "Dissolving sugar", "Burning wood", "Breaking glass"], answer: 2 },
+                { subject: "chemistry", question: "Smallest particle of an element?", options: ["Molecule", "Atom", "Ion", "Compound"], answer: 1 },
+                { subject: "chemistry", question: "Which is a noble gas?", options: ["Oxygen", "Nitrogen", "Helium", "Hydrogen"], answer: 2 },
+                { subject: "chemistry", question: "Atomic number represents number of?", options: ["Neutrons", "Protons", "Electrons", "Protons and neutrons"], answer: 1 },
+                { subject: "chemistry", question: "Which is NOT a state of matter?", options: ["Solid", "Liquid", "Gas", "Energy"], answer: 3 },
+                { subject: "chemistry", question: "Chemical formula for water?", options: ["H2O", "CO2", "NaCl", "O2"], answer: 0 },
+                { subject: "chemistry", question: "Which is an example of a compound?", options: ["Oxygen", "Hydrogen", "Water", "Nitrogen"], answer: 2 },
+                { subject: "chemistry", question: "pH of neutral solution?", options: ["0", "7", "14", "10"], answer: 1 },
+                { subject: "chemistry", question: "Which is a physical change?", options: ["Rusting iron", "Burning paper", "Cooking egg", "Dissolving salt"], answer: 3 },
+                { subject: "chemistry", question: "Periodic table arranged by?", options: ["Atomic mass", "Atomic number", "Density", "Boiling point"], answer: 1 },
+                
+                // Physics (10)
+                { subject: "physics", question: "Which is a fundamental quantity?", options: ["Force", "Velocity", "Mass", "Energy"], answer: 2 },
+                { subject: "physics", question: "SI unit of force?", options: ["Joule", "Newton", "Watt", "Pascal"], answer: 1 },
+                { subject: "physics", question: "Which is NOT a vector quantity?", options: ["Displacement", "Velocity", "Force", "Speed"], answer: 3 },
+                { subject: "physics", question: "Rate of change of velocity?", options: ["Speed", "Displacement", "Acceleration", "Momentum"], answer: 2 },
+                { subject: "physics", question: "Unit of electric current?", options: ["Volt", "Ohm", "Ampere", "Watt"], answer: 2 },
+                { subject: "physics", question: "Light bending between media?", options: ["Reflection", "Refraction", "Diffraction", "Interference"], answer: 1 },
+                { subject: "physics", question: "SI unit of temperature?", options: ["Celsius", "Fahrenheit", "Kelvin", "Rankine"], answer: 2 },
+                { subject: "physics", question: "Which is a scalar quantity?", options: ["Force", "Velocity", "Displacement", "Distance"], answer: 3 },
+                { subject: "physics", question: "Pressure in confined fluid transmitted equally?", options: ["Archimedes' Principle", "Pascal's Principle", "Bernoulli's Principle", "Boyle's Law"], answer: 1 },
+                { subject: "physics", question: "Energy due to position?", options: ["Kinetic energy", "Chemical energy", "Potential energy", "Thermal energy"], answer: 2 }
+            ];
+
+            // === DOM ELEMENTS ===
+            const loginPage = document.getElementById('loginPage');
+            const quizContainer = document.getElementById('quizContainer');
+            const resultContainer = document.getElementById('resultContainer');
+            const loginBtn = document.getElementById('loginBtn');
+            const passwordInput = document.getElementById('password');
+            const errorMessage = document.getElementById('errorMessage');
+            const questionText = document.getElementById('questionText');
+            const optionsContainer = document.getElementById('optionsContainer');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const currentQuestionEl = document.getElementById('currentQuestion');
+            const totalQuestionsEl = document.getElementById('totalQuestions');
+            const timerEl = document.getElementById('timer');
+            const progressBar = document.getElementById('progressBar');
+            const resultScore = document.getElementById('resultScore');
+            const resultMessage = document.getElementById('resultMessage');
+            const restartBtn = document.getElementById('restartBtn');
+            const emailBtn = document.getElementById('emailBtn');
+            const subjectTag = document.getElementById('subjectTag');
+
+            // === STATE ===
+            let currentQuestionIndex = 0;
+            let userAnswers = [];
+            let shuffledQuestions = [];
+            let timeLeft = 30 * 60; // 30 minutes
+            let timerInterval;
+
+            // === INITIALIZATION ===
+            function init() {
+                // Add event listeners
+                loginBtn.addEventListener('click', handleLogin);
+                prevBtn.addEventListener('click', prevQuestion);
+                nextBtn.addEventListener('click', nextQuestion);
+                restartBtn.addEventListener('click', restartQuiz);
+                emailBtn.addEventListener('click', sendScoreToEmail);
+                
+                // Focus on password field
+                passwordInput.focus();
+                
+                // Prevent form submission on Enter
+                passwordInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleLogin();
+                    }
+                });
+                
+                // Add accessibility
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft' && !prevBtn.disabled) {
+                        e.preventDefault();
+                        prevQuestion();
+                    }
+                    if (e.key === 'ArrowRight' && currentQuestionIndex < shuffledQuestions.length - 1) {
+                        e.preventDefault();
+                        nextQuestion();
+                    }
+                });
+            }
+
+            // === LOGIN HANDLER ===
+            function handleLogin() {
+                if (passwordInput.value.trim() === 'apex123') {
+                    errorMessage.style.display = 'none';
+                    startQuiz();
+                } else {
+                    errorMessage.style.display = 'block';
+                    passwordInput.classList.add('error');
+                    setTimeout(() => {
+                        passwordInput.classList.remove('error');
+                    }, 2000);
+                }
+            }
+
+            // === START QUIZ ===
+            function startQuiz() {
+                // Shuffle questions
+                shuffledQuestions = [...quizData].sort(() => Math.random() - 0.5);
+                currentQuestionIndex = 0;
+                userAnswers = Array(shuffledQuestions.length).fill(null);
+                timeLeft = 30 * 60;
+                
+                // Update UI
+                totalQuestionsEl.textContent = shuffledQuestions.length;
+                showQuestion();
+                
+                // Start timer
+                startTimer();
+                
+                // Hide login, show quiz
+                loginPage.style.display = 'none';
+                quizContainer.style.display = 'block';
+                
+                // Add animation
+                quizContainer.classList.add('fade-in');
+                
+                // Focus on first question
+                setTimeout(() => {
+                    const firstOption = document.querySelector('.option input');
+                    if (firstOption) firstOption.focus();
+                }, 100);
+            }
+
+            // === TIMER ===
+            function startTimer() {
+                clearInterval(timerInterval);
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        showResults();
+                        return;
+                    }
+                    
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }, 1000);
+            }
+
+            // === SHOW QUESTION ===
+            function showQuestion() {
+                const question = shuffledQuestions[currentQuestionIndex];
+                
+                // Update question
+                questionText.textContent = question.question;
+                currentQuestionEl.textContent = currentQuestionIndex + 1;
+                
+                // Update subject tag
+                const subjectLabels = {
+                    'english': { text: 'English', class: 'english-tag' },
+                    'biology': { text: 'Biology', class: 'biology-tag' },
+                    'chemistry': { text: 'Chemistry', class: 'chemistry-tag' },
+                    'physics': { text: 'Physics', class: 'physics-tag' }
+                };
+                
+                const tag = subjectLabels[question.subject];
+                subjectTag.textContent = tag.text;
+                subjectTag.className = `subject-tag ${tag.class}`;
+                
+                // Clear options
+                optionsContainer.innerHTML = '';
+                
+                // Create options
+                question.options.forEach((option, index) => {
+                    const optionEl = document.createElement('div');
+                    optionEl.className = 'option';
+                    if (userAnswers[currentQuestionIndex] === index) {
+                        optionEl.classList.add('selected');
+                    }
+                    
+                    optionEl.innerHTML = `
+                        <input type="radio" name="option" id="option${index}" 
+                               ${userAnswers[currentQuestionIndex] === index ? 'checked' : ''}>
+                        <label for="option${index}">${option}</label>
+                    `;
+                    
+                    optionEl.querySelector('input').addEventListener('change', () => {
+                        userAnswers[currentQuestionIndex] = index;
+                        updateOptionSelection();
+                        updateProgressBar();
+                    });
+                    
+                    optionsContainer.appendChild(optionEl);
+                });
+                
+                // Update navigation
+                prevBtn.disabled = currentQuestionIndex === 0;
+                nextBtn.textContent = currentQuestionIndex === shuffledQuestions.length - 1 ? 'Submit' : 'Next';
+                
+                // Update progress bar
+                updateProgressBar();
+                
+                // Focus on first option
+                setTimeout(() => {
+                    const firstInput = document.querySelector(`#option0`);
+                    if (firstInput) firstInput.focus();
+                }, 50);
+            }
+
+            // === UPDATE OPTION SELECTION ===
+            function updateOptionSelection() {
+                const options = document.querySelectorAll('.option');
+                options.forEach((option, index) => {
+                    if (userAnswers[currentQuestionIndex] === index) {
+                        option.classList.add('selected');
+                    } else {
+                        option.classList.remove('selected');
+                    }
+                });
+            }
+
+            // === UPDATE PROGRESS BAR ===
+            function updateProgressBar() {
+                const progress = ((currentQuestionIndex) / shuffledQuestions.length) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
+
+            // === NEXT QUESTION ===
+            function nextQuestion() {
+                if (currentQuestionIndex < shuffledQuestions.length - 1) {
+                    currentQuestionIndex++;
+                    showQuestion();
+                } else {
+                    clearInterval(timerInterval);
+                    showResults();
+                }
+            }
+
+            // === PREVIOUS QUESTION ===
+            function prevQuestion() {
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    showQuestion();
+                }
+            }
+
+            // === SHOW RESULTS ===
+            function showResults() {
+                // Count correct answers
+                let correctAnswers = 0;
+                for (let i = 0; i < shuffledQuestions.length; i++) {
+                    if (userAnswers[i] === shuffledQuestions[i].answer) {
+                        correctAnswers++;
+                    }
+                }
+                
+                const score = Math.round((correctAnswers / shuffledQuestions.length) * 100);
+                
+                // Update result
+                resultScore.textContent = `${score}%`;
+                
+                // Set message
+                if (score >= 80) {
+                    resultMessage.textContent = `Excellent! You scored ${score}%. You have a strong grasp of the material.`;
+                } else if (score >= 60) {
+                    resultMessage.textContent = `Good job! You scored ${score}%. You have a decent understanding but could improve in some areas.`;
+                } else if (score >= 40) {
+                    resultMessage.textContent = `Fair performance. You scored ${score}%. Review the material and try again.`;
+                } else {
+                    resultMessage.textContent = `You scored ${score}%. It's recommended to study more before attempting the exam again.`;
+                }
+                
+                // Show result screen
+                quizContainer.style.display = 'none';
+                resultContainer.style.display = 'flex';
+                resultContainer.classList.add('fade-in');
+            }
+
+            // === SEND SCORE TO EMAIL ===
+            function sendScoreToEmail() {
+                let correctAnswers = 0;
+                for (let i = 0; i < shuffledQuestions.length; i++) {
+                    if (userAnswers[i] === shuffledQuestions[i].answer) {
+                        correctAnswers++;
+                    }
+                }
+                
+                const score = Math.round((correctAnswers / shuffledQuestions.length) * 100);
+                const subject = "My Apex TOTORIAL JAMB Score";
+                const body = `Hello,\n\nI just completed the Apex TOTORIAL JAMB Practice Test.\n\nMy Score: ${score}%\n\nTotal Questions: ${shuffledQuestions.length}\nCorrect Answers: ${correctAnswers}\n\nBest regards,\n[Your Name]`;
+
+                const mailtoLink = `mailto:oriaifodominion@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                window.location.href = mailtoLink;
+            }
+
+            // === RESTART QUIZ ===
+            function restartQuiz() {
+                currentQuestionIndex = 0;
+                userAnswers = Array(shuffledQuestions.length).fill(null);
+                timeLeft = 30 * 60;
+                showQuestion();
+                startTimer();
+                
+                resultContainer.style.display = 'none';
+                quizContainer.style.display = 'block';
+            }
+
+            // === INIT ===
+            document.addEventListener('DOMContentLoaded', init);
+        </script>
+</body>
+</html>
